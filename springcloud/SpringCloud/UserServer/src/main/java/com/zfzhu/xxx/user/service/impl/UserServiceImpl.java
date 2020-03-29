@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zfzhu.xxx.user.entity.User;
-import com.zfzhu.xxx.user.mapper.UserMapper;
+import com.zfzhu.xxx.user.mapper.db1.UserMapper;
 import com.zfzhu.xxx.user.service.UserService;
 
 @Service("userService")

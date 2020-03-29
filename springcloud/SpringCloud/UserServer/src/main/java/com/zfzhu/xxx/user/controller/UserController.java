@@ -21,10 +21,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zfzhu.xxx.user.entity.User;
+import com.zfzhu.xxx.user.service.TestService;
 import com.zfzhu.xxx.user.service.UserService;
 
 /**
@@ -35,11 +35,14 @@ import com.zfzhu.xxx.user.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 	
-	@Value("zfzhu.xxx.secret")
+	@Value("xxx.secret")
 	String secret;
 	
 	@Autowired
     private UserService userService;
+	
+	@Autowired
+    private TestService testService;
 	
 	@Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -58,7 +61,7 @@ public class UserController {
         	long curTime = System.currentTimeMillis();
         	Date expiresAt = new Date(curTime+28800000);
         	
-        	token = JWT.create().withAudience(user.getName()).withExpiresAt(expiresAt)
+        	token = JWT.create().withAudience(user.getUsername()).withExpiresAt(expiresAt)
         			.sign(Algorithm.HMAC256(secret));
         	
         	ObjectMapper objectMapper = new ObjectMapper();
@@ -68,7 +71,7 @@ public class UserController {
 				e.printStackTrace();
 			}
         	
-        	redisTemplate.opsForValue().set("userSession@"+user.getName(), userJson);
+        	redisTemplate.opsForValue().set("userSession@"+user.getUsername(), userJson);
         }
         
         Map<String, Object> res = new HashMap<>();
@@ -85,6 +88,20 @@ public class UserController {
     	PageHelper.startPage(1, 5);
     	List<User> list = userService.listAll();
     	PageInfo<User> pageInfo = new PageInfo<>(list);
+    	
+    	Map<String, Object> res = new HashMap<>();
+    	res.put("code", 1001);
+    	res.put("data", pageInfo);
+    	
+        return ResponseEntity.ok(res);
+    }
+    
+    @RequestMapping("/test")
+    @ResponseBody
+    public Object test(){
+    	PageHelper.startPage(1, 5);
+    	List<Map<String, Object>> list = testService.listAll();
+    	PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(list);
     	
     	Map<String, Object> res = new HashMap<>();
     	res.put("code", 1001);

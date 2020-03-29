@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.zfzhu.xxx.user.mapper;
+package com.zfzhu.xxx.user.mapper.db1;
 
 import java.util.List;
 import java.util.Map;

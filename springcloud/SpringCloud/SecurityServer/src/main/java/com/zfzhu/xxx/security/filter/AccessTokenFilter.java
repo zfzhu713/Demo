@@ -34,7 +34,7 @@ public class AccessTokenFilter extends ZuulFilter {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
 		
-		String token = request.getParameter("token");
+		String token = request.getHeader("token");
 		boolean valid = false;
 		
 		if (!StringUtils.isEmpty(token)) {
@@ -55,9 +55,6 @@ public class AccessTokenFilter extends ZuulFilter {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.netflix.zuul.IZuulFilter#shouldFilter()
-	 */
 	@Override
 	public boolean shouldFilter() {
 		RequestContext ctx = RequestContext.getCurrentContext();
@@ -69,17 +66,11 @@ public class AccessTokenFilter extends ZuulFilter {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.netflix.zuul.ZuulFilter#filterOrder()
-	 */
 	@Override
 	public int filterOrder() {
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.netflix.zuul.ZuulFilter#filterType()
-	 */
 	@Override
 	public String filterType() {
 		return "pre";

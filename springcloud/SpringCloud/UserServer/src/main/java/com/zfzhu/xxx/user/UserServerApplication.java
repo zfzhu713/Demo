@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@MapperScan("com.zfzhu.xxx.user.mapper")
+//@MapperScan("com.zfzhu.xxx.user.mapper")
 public class UserServerApplication {
 
 	public static void main(String[] args) {

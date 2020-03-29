@@ -3,9 +3,6 @@
  */
 package com.zfzhu.xxx.support.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zfzhu.xxx.support.service.UserService;
 
 /**
@@ -32,7 +28,7 @@ import com.zfzhu.xxx.support.service.UserService;
 @RequestMapping("/user")
 public class UserController {
 	
-	@Value("zfzhu.xxx.secret")
+	@Value("xxx.secret")
 	String secret;
 	
 	@Autowired
@@ -52,13 +48,13 @@ public class UserController {
     @RequestMapping("/list")
     @ResponseBody
     public Object list(HttpServletRequest request){
-    	String token = request.getParameter("token");
+    	String token = request.getHeader("token");
     	
     	JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build();
 		DecodedJWT decodedJWT = jwtVerifier.verify(token);
-		String name =decodedJWT.getAudience().get(0);
+		String username =decodedJWT.getAudience().get(0);
     	
-    	String userJson = redisTemplate.opsForValue().get("userSession@"+name);
+    	String userJson = redisTemplate.opsForValue().get("userSession@"+username);
     	System.err.print(userJson);
     	
     	Object data = userService.list();
